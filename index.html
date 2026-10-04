@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Audio</title>
+<style>
+html,body{margin:0;width:100%;height:100%;background:#000}
+button{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+padding:14px 24px;border:0;border-radius:10px;font-size:16px;cursor:pointer}
+</style>
+</head>
+<body>
+<button id="play">Tap to play</button>
+<audio id="a1" src="audio1.mp3" preload="auto"></audio>
+<audio id="a2" src="audio2.mp3" preload="auto"></audio>
+
+<script>
+const a1 = document.getElementById('a1');
+const a2 = document.getElementById('a2');
+const btn = document.getElementById('play');
+
+async function playBoth() {
+  a1.currentTime = 0;
+  a2.currentTime = 0;
+  await Promise.all([a1.play(), a2.play()]);
+  btn.style.display = 'none';
+}
+
+window.addEventListener('load', () => {
+  playBoth().catch(() => {
+    // Browser blocked autoplay; user interaction is required.
+    btn.style.display = 'block';
+  });
+});
+
+btn.addEventListener('click', () => {
+  playBoth().catch(() => {});
+});
+</script>
+</body>
+</html>
